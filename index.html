@@ -22,7 +22,8 @@
 
     <style>
       #map {
-        height: 350px;
+        height: 860px;
+        width: 1860px;
       }
     </style>
   </head>
@@ -43,13 +44,21 @@
 
     navigator.geolocation.watchPosition(success, error);
 
+    let marker, circle;
+
     function success(pos) {
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
       const accuracy = pos.coords.accuracy;
 
-      L.marker([lat, lng]).addTo(map);
-      L.circle([lat, lng], { radius: accuracy }).addTo(map);
+      if (marker) {
+        map.removeLayer(marker);
+        map.removeLayer(circle);
+      }
+      marker = L.marker([lat, lng]).addTo(map);
+      circle = L.circle([lat, lng], { radius: accuracy }).addTo(map);
+
+      map.fitBounds(circle.getbounds());
     }
 
     function error(err) {
