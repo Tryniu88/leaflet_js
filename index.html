@@ -13,7 +13,6 @@
       crossorigin=""
     />
 
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script
       src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
@@ -25,10 +24,15 @@
         height: 860px;
         width: 1860px;
       }
+
+      #h1 {
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+      }
     </style>
   </head>
   <body>
-    <h1>Map User Location</h1>
+    <h1 id="h1">Map User Location</h1>
 
     <div id="map"></div>
   </body>
@@ -44,7 +48,7 @@
 
     navigator.geolocation.watchPosition(success, error);
 
-    let marker, circle;
+    let marker, circle, zoomed;
 
     function success(pos) {
       const lat = pos.coords.latitude;
@@ -58,7 +62,11 @@
       marker = L.marker([lat, lng]).addTo(map);
       circle = L.circle([lat, lng], { radius: accuracy }).addTo(map);
 
-      map.fitBounds(circle.getbounds());
+      if (!zoomed) {
+        zoomed = map.fitBounds(circle.getBounds());
+      }
+
+      map.setView([lat, lng]);
     }
 
     function error(err) {
