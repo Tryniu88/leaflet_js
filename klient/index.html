@@ -58,23 +58,27 @@
     function success(pos) {
       // get the latitude from the geolocation API response
       const lat = pos.coords.latitude;
+      // get the longitude from the geolocation API response
       const lng = pos.coords.longitude;
+      //get the accuracy from the geolocation API response
       const accuracy = pos.coords.accuracy;
-
+      // if a marker already exists, remove it from the Leaflet map object
       if (marker) {
         map.removeLayer(marker);
         map.removeLayer(circle);
       }
+      // create a marker using the user's current
       marker = L.marker([lat, lng]).addTo(map);
+      // create a circle using the user's current position and accuracy and add it to the Leaflet map object
       circle = L.circle([lat, lng], { radius: accuracy }).addTo(map);
-
+      // if the map has not yet been zoomed to the user's position, set the Leaflet map object's view to fit the circle
       if (!zoomed) {
         zoomed = map.fitBounds(circle.getBounds());
       }
-
+      // set the Leaflet map object's view to the user's current position
       map.setView([lat, lng]);
     }
-
+    //callback from allowing own geolocation
     function error(err) {
       if (err.code === 1) {
         alert("Please allow your geolocation access");
