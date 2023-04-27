@@ -45,15 +45,18 @@
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
       attribution:
-        // add the tile layer to the Leaflet map object
+        // attribution for OpenStreetMap
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      // add the tile layer to the Leaflet map object
     }).addTo(map);
 
+    // use the geolocation API to get the user's current position and watch for changes
     navigator.geolocation.watchPosition(success, error);
 
     let marker, circle, zoomed;
-
+    // success callback function for geolocation
     function success(pos) {
+      // get the latitude from the geolocation API response
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
       const accuracy = pos.coords.accuracy;
